@@ -21,3 +21,49 @@ Your goal is to:
 
 Write your code below this string.
 """
+import re
+import nltk
+from nltk.stem import PorterStemmer
+from nltk.corpus import stopwords
+
+nltk.download('punkt')      # Tokenizer models returns True
+nltk.download('stopwords')  # List of common stopwords returns True
+nltk.download('averaged_perceptron_tagger')
+
+file = open('story2.txt')
+text_from_file = file.read()
+file.close()
+
+print('========2️⃣ Apply regex with re.sub() to remove:====')
+## removed 3 dots between Impossible and `!`
+clean_story = re.sub(r'(Impossible)\.+\!',r'\1!', text_from_file)
+# print(clean_story)
+##replaced that 1 & with and
+clean_story =re.sub(r'(&)', 'and', clean_story)
+# print(clean_story)
+## removed `->`
+clean_story = re.sub(r'->', '', clean_story)
+# print(clean_story)
+## removed anything with a % and #
+clean_story = re.sub(r'[%#]', '', clean_story)
+# print(clean_story)
+## removed unnecessary `?` duplicates
+clean_story = re.sub(r'\?{2,}','?', clean_story)
+# print(clean_story)
+## period added after ("Test")
+clean_story = re.sub(r'(\))(?=\s|$)', r'\1.', clean_story)
+# print(clean_story)
+## removeed whitespaces that are indented twice or more
+clean_story = re.sub(r'\ {2,}', ' ', clean_story)
+# print(clean_story)
+## removed whitespace before `Debbuging` using \t for tabs
+clean_story = re.sub(r'[ \t]+(?=Debugging)', '', clean_story)
+print(clean_story)
+## hyperlink removed
+clean_story = re.sub(r'(https?://)', r'\1' + chr(0x200b), clean_story)
+print(clean_story)
+##removed the extra newlines
+clean_story = re.sub(r'\n+', '\n', clean_story)
+print(clean_story)
+
+
